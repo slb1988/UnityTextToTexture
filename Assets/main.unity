@@ -141,10 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eabe5c1a4522b64d9f30210a16f7b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: '%7Ked'
   customFont: {fileID: 12800000, guid: d6e7913614ec28d41bfccd74688d2edf, type: 2}
   fontCountX: 10
   fontCountY: 10
-  text: Unity
   textPlacementY: 0
   perCharacterKerning:
   - First: ' '
@@ -338,10 +338,8 @@ MonoBehaviour:
   - First: ~
     Second: 0.397
   lineSpacing: 0.75
-  useSharedMaterial: 1
   decalTextureSize: 1024
   characterSize: 0.9
-  textureID: _DecalTex
 --- !u!4 &61
 Transform:
   m_ObjectHideFlags: 0
@@ -349,8 +347,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54}
-  m_LocalRotation: {x: 0.39226437, y: 0.58832705, z: 0.58832705, w: -0.39226437}
-  m_LocalPosition: {x: -4.4682617, y: 0.5963917, z: 0.4904709}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
