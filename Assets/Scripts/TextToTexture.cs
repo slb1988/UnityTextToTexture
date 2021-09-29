@@ -30,12 +30,20 @@ THE SOFTWARE.
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class TextToTexture
 {
     private const int ASCII_START_OFFSET = 32;
     private Font customFont;
     private Texture2D fontTexture;
+
+    internal int CalcTextHeight()
+    {
+        int fontGridCellHeight = (int)(fontTexture.height / fontCountY);
+        return fontGridCellHeight;
+    }
+
     private int fontCountX;
     private int fontCountY;
     private float[] kerningValues;
@@ -52,20 +60,44 @@ public class TextToTexture
     }
 
     //placementX and Y - placement within texture size, texture size = textureWidth and textureHeight (square)
-    public Texture2D CreateTextToTexture(string text, int textPlacementX, int textPlacementY, int textureSize, float characterSize, float lineSpacing)
+    public Texture2D CreateTextToTexture(string text, int textPlacementX, int textPlacementY, int textureSize, float characterSize, float lineSpacing, int offset)
     {
-        Texture2D txtTexture = CreatefillTexture2D(Color.clear, textureSize, textureSize);
-        int fontGridCellWidth = (int)(fontTexture.width / fontCountX);
-        int fontGridCellHeight = (int)(fontTexture.height / fontCountY);
-        int fontItemWidth = (int)(fontGridCellWidth * characterSize);
-        int fontItemHeight = (int)(fontGridCellHeight * characterSize);
-        Vector2 charTexturePos;
-        Color[] charPixels;
+        textPlacementX = 0;
+        textPlacementY = 0;
         float textPosX = textPlacementX;
         float textPosY = textPlacementY;
+        int fontGridCellWidth = (int)(fontTexture.width / fontCountX);
+        int fontGridCellHeight = (int)(fontTexture.height / fontCountY);
         float charKerning;
-        bool nextCharacterSpecial = false;
         char letter;
+        bool nextCharacterSpecial = false;
+        Vector2 charTexturePos;
+        int fontItemWidth = (int)(fontGridCellWidth * characterSize);
+        int fontItemHeight = (int)(fontGridCellHeight * characterSize);
+
+        for (int n = 0; n < text.Length; n++)
+        {
+            letter = text[n];
+            if (!nextCharacterSpecial && customFont.HasCharacter(letter))
+            {
+                charTexturePos = GetCharacterGridPosition(letter);
+                charTexturePos.x *= fontGridCellWidth;
+                charTexturePos.y *= fontGridCellHeight;
+                var y = fontTexture.height - (int)charTexturePos.y - fontGridCellHeight;
+
+                charKerning = GetKerningValue(letter);
+                textPosX += (fontItemWidth * charKerning); //add kerning here
+            }
+        }
+        var texWidth = Mathf.CeilToInt(textPosX);// (Screen.width - textPosX) / 2;
+        texWidth = texWidth+ offset;
+        Debug.Log($"{textPosX} {texWidth}");
+
+        textPosX = textPlacementX;
+        textPosY = textPlacementY;
+
+        Texture2D txtTexture = CreatefillTexture2D(Color.clear, texWidth, fontItemHeight);
+        Color[] charPixels;
 
         for (int n = 0; n < text.Length; n++)
         {

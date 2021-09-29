@@ -340,6 +340,7 @@ MonoBehaviour:
   lineSpacing: 0.75
   decalTextureSize: 1024
   characterSize: 0.9
+  offset: 60
 --- !u!4 &61
 Transform:
   m_ObjectHideFlags: 0

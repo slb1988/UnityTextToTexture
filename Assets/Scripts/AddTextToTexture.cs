@@ -19,6 +19,8 @@ public class AddTextToTexture: MonoBehaviour
     
     private int maxMugTextWidth = 280;
 
+
+    public int offset = 100;
     [ContextMenu("DumpTex")]
     void DumpTex()
     {
@@ -44,12 +46,15 @@ public class AddTextToTexture: MonoBehaviour
         Debug.Log(text);
 
         TextToTexture textToTexture = new TextToTexture(customFont, fontCountX, fontCountY, perCharacterKerning, false);
+        var fontHeight = textToTexture.CalcTextHeight();
         int textWidthPlusTrailingBuffer = textToTexture.CalcTextWidthPlusTrailingBuffer(text, characterSize);
 
+        int textPlacementY = (Screen.height - fontHeight) / 2;
+        Debug.Log($"{Screen.height} {fontHeight} {textPlacementY}");
         int posX = (decalTextureSize - (textWidthPlusTrailingBuffer + 1)) - Mathf.Clamp(((maxMugTextWidth - textWidthPlusTrailingBuffer) / 2), 0, decalTextureSize);
-        var tex = textToTexture.CreateTextToTexture(text, posX, textPlacementY, decalTextureSize, characterSize, lineSpacing);
+        var tex = textToTexture.CreateTextToTexture(text, posX, textPlacementY, decalTextureSize, characterSize, lineSpacing, offset);
 
-        File.WriteAllBytes(Application.dataPath + "/../dump.png", tex.EncodeToPNG());
+        File.WriteAllBytes(Application.dataPath + "/../dump.jpg", tex.EncodeToJPG());
     }
     //default is arial, this can be changed so you don't have to go through the painful process of adding kerning through the editor
     private float[] DefaultCharacterKerning()
